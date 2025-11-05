@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { allProjects, websiteTypes, type IProjectCategory } from "../constants";
+import { allProjects, websiteTypes } from "../constants";
 import { StarsCanvas } from "../components";
 import { fadeIn, textVariant } from "../utils/motion";
 
@@ -17,7 +17,6 @@ const ProjectCard: React.FC<IProjectCard> = ({
   name,
   description,
   tags,
-  sourceCodeLink,
 }) => {
   return (
     <motion.div
