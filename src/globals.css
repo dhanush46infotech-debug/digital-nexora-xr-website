@@ -474,3 +474,138 @@
   );
   pointer-events: none;
 }
+
+/* Contact Badges - Glassmorphism with Neon Glow */
+.contact-badges-container {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem auto;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .contact-badges-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.contact-badge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.contact-badge:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.contact-badge::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  padding: 2px;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.contact-badge:hover::before {
+  opacity: 1;
+}
+
+/* WhatsApp Badge - Green Glow */
+.contact-badge.whatsapp {
+  background: linear-gradient(135deg, rgba(0, 255, 120, 0.10) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(0, 255, 120, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 255, 120, 0.15);
+}
+
+.contact-badge.whatsapp:hover {
+  box-shadow: 0 12px 48px rgba(0, 255, 120, 0.3);
+  border-color: rgba(0, 255, 120, 0.4);
+}
+
+.contact-badge.whatsapp .badge-icon {
+  color: #00ff78;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 120, 0.6));
+}
+
+/* Gmail Badge - Blue Glow */
+.contact-badge.gmail {
+  background: linear-gradient(135deg, rgba(30, 120, 255, 0.10) 0%, rgba(255, 255, 255, 0.03) 100%);
+  border: 1px solid rgba(30, 120, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(30, 120, 255, 0.15);
+}
+
+.contact-badge.gmail:hover {
+  box-shadow: 0 12px 48px rgba(30, 120, 255, 0.3);
+  border-color: rgba(30, 120, 255, 0.4);
+}
+
+.contact-badge.gmail .badge-icon {
+  color: #1e78ff;
+  filter: drop-shadow(0 0 8px rgba(30, 120, 255, 0.6));
+}
+
+.badge-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.contact-badge:hover .badge-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.badge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.badge-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.02em;
+}
+
+.badge-value {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .contact-badge {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .badge-label {
+    font-size: 0.8rem;
+  }
+
+  .badge-value {
+    font-size: 0.7rem;
+  }
+}

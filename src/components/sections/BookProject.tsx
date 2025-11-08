@@ -15,10 +15,9 @@ emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
 interface FormData {
   projectName: string;
   websiteType: string;
+  digitalMarketingType: string;
   purpose: string;
   duration: string;
-  estimatedFees: string;
-  paymentType: string;
   name: string;
   email: string;
   phone: string;
@@ -30,10 +29,9 @@ const BookProject = () => {
   const [formData, setFormData] = useState<FormData>({
     projectName: "",
     websiteType: "",
+    digitalMarketingType: "",
     purpose: "",
     duration: "",
-    estimatedFees: "",
-    paymentType: "",
     name: "",
     email: "",
     phone: "",
@@ -51,29 +49,6 @@ const BookProject = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const formatIndianRupees = (value: string) => {
-    // Remove non-numeric characters
-    const numericValue = value.replace(/[^0-9]/g, "");
-
-    // Format with commas
-    if (numericValue === "") return "";
-
-    const lastThree = numericValue.substring(numericValue.length - 3);
-    const otherNumbers = numericValue.substring(0, numericValue.length - 3);
-
-    if (otherNumbers !== "") {
-      return (
-        otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + lastThree
-      );
-    } else {
-      return lastThree;
-    }
-  };
-
-  const handleFeesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedValue = formatIndianRupees(e.target.value);
-    setFormData({ ...formData, estimatedFees: formattedValue });
-  };
 
   const sendProjectEmail = async (formData: FormData) => {
     try {
@@ -90,10 +65,9 @@ Project Details:
 ---------------
 Project Name: ${formData.projectName}
 Website Type: ${formData.websiteType}
+Digital Marketing Type: ${formData.digitalMarketingType}
 Purpose: ${formData.purpose}
 Duration: ${formData.duration}
-Estimated Fees: ₹${formData.estimatedFees}
-Payment Type: ${formData.paymentType}
 
 Client Information:
 -----------------
@@ -113,10 +87,9 @@ ${formData.additionalInfo || 'No additional information provided'}
         from_email: formData.email,
         project_name: formData.projectName,
         website_type: formData.websiteType,
+        digital_marketing_type: formData.digitalMarketingType,
         purpose: formData.purpose,
         duration: formData.duration,
-        estimated_fees: formData.estimatedFees,
-        payment_type: formData.paymentType,
         phone: formData.phone,
         additional_info: formData.additionalInfo,
         message: emailContent // This will contain the full formatted message
@@ -187,7 +160,7 @@ ${formData.additionalInfo || 'No additional information provided'}
 
     try {
       // Validate required fields
-      const requiredFields: Array<keyof FormData> = ['projectName', 'websiteType', 'purpose', 'duration', 'estimatedFees', 'paymentType', 'name', 'email', 'phone'];
+      const requiredFields: Array<keyof FormData> = ['projectName', 'websiteType', 'digitalMarketingType', 'purpose', 'duration', 'name', 'email', 'phone'];
       const missingFields = requiredFields.filter(field => !formData[field]);
       
       if (missingFields.length > 0) {
@@ -215,10 +188,9 @@ ${formData.additionalInfo || 'No additional information provided'}
       setFormData({
         projectName: "",
         websiteType: "",
+        digitalMarketingType: "",
         purpose: "",
         duration: "",
-        estimatedFees: "",
-        paymentType: "",
         name: "",
         email: "",
         phone: "",
@@ -287,6 +259,28 @@ ${formData.additionalInfo || 'No additional information provided'}
             </select>
           </label>
 
+          {/* Types of Digital Marketing */}
+          <label className="flex flex-col">
+            <span className="mb-4 font-medium text-white">
+              Types of Digital Marketing
+            </span>
+            <select
+              name="digitalMarketingType"
+              value={formData.digitalMarketingType}
+              onChange={handleChange}
+              required
+              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
+            >
+              <option value="">Select Digital Marketing Type</option>
+              <option value="social-media">Social Media Management</option>
+              <option value="digital-advertising">Digital Advertising</option>
+              <option value="brand-strategy">Brand Strategy</option>
+              <option value="search-optimization">Search Optimization</option>
+              <option value="content-strategy">Content Strategy</option>
+              <option value="digital-infrastructure">Digital Infrastructure</option>
+            </select>
+          </label>
+
           {/* Purpose */}
           <label className="flex flex-col">
             <span className="mb-4 font-medium text-white">
@@ -318,47 +312,6 @@ ${formData.additionalInfo || 'No additional information provided'}
               <option value="15days">15 Days</option>
               <option value="1month">1 Month</option>
               <option value="2months">More than 2 Months</option>
-            </select>
-          </label>
-
-          {/* Estimated Fees */}
-          <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">
-              Estimated Fees (INR)
-            </span>
-            <div className="relative">
-              <span className="bg-tertiary absolute left-6 top-1/2 -translate-y-1/2 text-[18px] text-white">
-                ₹
-              </span>
-              <input
-                type="text"
-                name="estimatedFees"
-                value={formData.estimatedFees}
-                onChange={handleFeesChange}
-                required
-                placeholder="1,00,000"
-                className="bg-tertiary placeholder:text-secondary w-full rounded-lg border-none py-4 pl-12 pr-6 font-medium text-white outline-none"
-              />
-            </div>
-            <span className="text-secondary mt-2 text-[12px]">
-              Enter amount in Indian Rupees (automatically formatted)
-            </span>
-          </label>
-
-          {/* Payment Type */}
-          <label className="flex flex-col">
-            <span className="mb-4 font-medium text-white">Payment Type</span>
-            <select
-              name="paymentType"
-              value={formData.paymentType}
-              onChange={handleChange}
-              required
-              className="bg-tertiary placeholder:text-secondary rounded-lg border-none px-6 py-4 font-medium text-white outline-none"
-            >
-              <option value="">Select Payment Type</option>
-              <option value="advance">Advance Payment</option>
-              <option value="full">Full Payment</option>
-              <option value="milestone">Milestone Based</option>
             </select>
           </label>
 
