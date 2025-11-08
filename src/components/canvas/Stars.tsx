@@ -1,8 +1,10 @@
-import { useState, useRef, Suspense } from "react";
+import { useState, useRef, Suspense, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Preload } from "@react-three/drei";
 import * as random from "maath/random/dist/maath-random.esm";
 import * as THREE from "three";
+import { getDeviceCapabilities } from "../../utils/deviceDetection";
+import { getQualitySettings } from "../../utils/qualityConfig";
 
 interface StarsProps {
   [key: string]: unknown;
@@ -10,8 +12,13 @@ interface StarsProps {
 
 const Stars = (props: StarsProps) => {
   const ref = useRef<THREE.Points>(null);
+
+  // Get device capabilities for particle count optimization
+  const deviceCaps = useMemo(() => getDeviceCapabilities(), []);
+  const qualitySettings = useMemo(() => getQualitySettings(deviceCaps.quality), [deviceCaps.quality]);
+
   const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(5001), { radius: 1.2 })
+    random.inSphere(new Float32Array(qualitySettings.starParticles), { radius: 1.2 })
   );
 
   useFrame((_state, delta) => {

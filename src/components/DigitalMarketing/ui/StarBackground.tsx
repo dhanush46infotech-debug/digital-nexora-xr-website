@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { getDeviceCapabilities } from '../../../utils/deviceDetection';
+import { getQualitySettings } from '../../../utils/qualityConfig';
 
 const StarBackground: React.FC = () => {
-  const stars = Array.from({ length: 50 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 2 + 1,
-    duration: Math.random() * 3 + 2,
-    delay: Math.random() * 2,
-  }));
+  // Optimize star count based on device performance
+  const deviceCaps = useMemo(() => getDeviceCapabilities(), []);
+  const qualitySettings = useMemo(() => getQualitySettings(deviceCaps.quality), [deviceCaps.quality]);
+
+  const stars = useMemo(
+    () =>
+      Array.from({ length: qualitySettings.starBackgroundCount }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 2 + 1,
+        duration: Math.random() * 3 + 2,
+        delay: Math.random() * 2,
+      })),
+    [qualitySettings.starBackgroundCount]
+  );
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -33,6 +43,7 @@ const StarBackground: React.FC = () => {
             top: `${star.y}%`,
             width: `${star.size}px`,
             height: `${star.size}px`,
+            willChange: 'opacity, transform', // GPU acceleration hint
           }}
         />
       ))}

@@ -1,9 +1,11 @@
-import React, { Suspense, useRef, useMemo } from "react";
+import React, { Suspense, useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, Preload, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 import CanvasLoader from "../layout/Loader";
+import { getDeviceCapabilities, getSafePixelRatio } from "../../utils/deviceDetection";
+import { getQualitySettings } from "../../utils/qualityConfig";
 
 // Import tech icons
 import reactIcon from "../../assets/tech/reactjs.png";
@@ -84,6 +86,15 @@ const FloatingTechIcon: React.FC<{
 
   // Load texture
   const texture = useLoader(THREE.TextureLoader, iconTexture);
+
+  // Cleanup texture on unmount
+  useEffect(() => {
+    return () => {
+      if (texture) {
+        texture.dispose();
+      }
+    };
+  }, [texture]);
 
   useFrame((state) => {
     if (meshRef.current) {
@@ -370,21 +381,26 @@ const MarketingEarthCanvas: React.FC = () => {
     };
   }, []);
 
+  // Get device capabilities for performance optimization
+  const deviceCaps = useMemo(() => getDeviceCapabilities(), []);
+  const qualitySettings = useMemo(() => getQualitySettings(deviceCaps.quality), [deviceCaps.quality]);
+  const pixelRatio = useMemo(() => getSafePixelRatio(), []);
+
   return (
     <>
       <Canvas
-        frameloop="always"
-        shadows
-        dpr={[1, 2]}
+        frameloop={qualitySettings.frameloop}
+        shadows={qualitySettings.shadows}
+        dpr={pixelRatio}
         camera={{
           position: isMobile ? [0, 0, 6] : [0, 0, 7],
           fov: isMobile ? 70 : 60,
         }}
         gl={{
           preserveDrawingBuffer: true,
-          antialias: true,
+          antialias: qualitySettings.antialias,
           alpha: true,
-          powerPreference: "high-performance",
+          powerPreference: isMobile ? "default" : "high-performance",
         }}
       >
         <Suspense fallback={<CanvasLoader />}>
