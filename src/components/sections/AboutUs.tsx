@@ -94,4 +94,4 @@ const AboutUs = () => {
   );
 };
 
-export default SectionWrapper(AboutUs, "aboutus");
+export default SectionWrapper(AboutUs, "about");

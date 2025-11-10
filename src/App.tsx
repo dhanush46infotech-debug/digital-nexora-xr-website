@@ -5,6 +5,7 @@ import { Navbar } from "./components";
 import Home from "./pages/Home";
 import BookProjectPage from "./pages/BookProjectPage";
 import ProjectsPage from "./pages/ProjectsPage";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   useEffect(() => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/book-project" element={<BookProjectPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </BrowserRouter>

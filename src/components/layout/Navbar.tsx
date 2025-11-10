@@ -29,7 +29,7 @@ const Navbar = () => {
           if (element) {
             element.scrollIntoView({ behavior: "smooth" });
           }
-        }, 100);
+        }, 500);
       } else {
         // Already on home page, just scroll
         const element = document.getElementById(navId);
@@ -80,7 +80,9 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`navbar ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'}`}
+      className={`fixed top-0 z-20 flex w-full items-center py-5 px-6 ${
+        scrolled ? "bg-primary" : "bg-transparent"
+      }`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
         <Link
@@ -107,14 +109,16 @@ const Navbar = () => {
 
         <ul className="hidden list-none flex-row gap-10 sm:flex">
           {navLinks.map((nav) => (
-            <li
-              key={nav.id}
-              className={`${
-                active === nav.id ? "text-white" : "text-secondary"
-              } cursor-pointer text-[18px] font-medium hover:text-white`}
-              onClick={() => handleNavClick(nav.id)}
-            >
-              <span>{nav.title}</span>
+            <li key={nav.id}>
+              <button
+                className={`${
+                  active === nav.id ? "text-white" : "text-secondary"
+                } cursor-pointer text-[18px] font-medium hover:text-white transition-colors duration-200`}
+                onClick={() => handleNavClick(nav.id)}
+                type="button"
+              >
+                {nav.title}
+              </button>
             </li>
           ))}
         </ul>
@@ -136,14 +140,16 @@ const Navbar = () => {
           >
             <ul className="flex flex-1 list-none flex-col items-start justify-end gap-4">
               {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins cursor-pointer text-[16px] font-medium ${
-                    active === nav.id ? "text-white" : "text-secondary"
-                  }`}
-                  onClick={() => handleNavClick(nav.id)}
-                >
-                  <span>{nav.title}</span>
+                <li key={nav.id}>
+                  <button
+                    className={`font-poppins cursor-pointer text-[16px] font-medium ${
+                      active === nav.id ? "text-white" : "text-secondary"
+                    } hover:text-white transition-colors duration-200`}
+                    onClick={() => handleNavClick(nav.id)}
+                    type="button"
+                  >
+                    {nav.title}
+                  </button>
                 </li>
               ))}
             </ul>
