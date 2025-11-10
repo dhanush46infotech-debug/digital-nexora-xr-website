@@ -81,15 +81,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`${
-        styles.paddingX
-      } fixed top-0 z-20 flex w-full items-center py-5 transition-all duration-300 ${
-        scrolled ? "bg-primary backdrop-blur-lg shadow-lg" : "bg-transparent backdrop-blur-sm"
-      }`}
-      style={{
-        backdropFilter: scrolled ? "blur(16px)" : "blur(8px)",
-        WebkitBackdropFilter: scrolled ? "blur(16px)" : "blur(8px)",
-      }}
+      className={`navbar ${scrolled ? 'navbar-scrolled' : 'navbar-transparent'}`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
         <Link
@@ -102,10 +94,7 @@ const Navbar = () => {
           <img
             src={Assets.dnxLogo ?? ""}
             alt="DNX Logo"
-            className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-110 mix-blend-lighten"
-            style={{
-              filter: "brightness(1.2) contrast(1.1)",
-            }}
+            className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
           />
           <p
             className="flex cursor-pointer text-[18px] font-bold text-white transition-all duration-300 group-hover:tracking-wider"

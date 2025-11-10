@@ -32,7 +32,7 @@ import tripguide from "./tripguide.png";
 // Team member images
 import dhanushImg from "../constants/dk.jpg";
 import hariharasudhanImg from "../constants/irah.jpg";
-import dnxLogo from "../constants/DNX].jpg";
+import dnxLogo from "./dnx.png";
 
 export {
   backend,
